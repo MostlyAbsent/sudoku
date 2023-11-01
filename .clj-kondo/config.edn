@@ -1,0 +1,1 @@
+{:lint-as {lib.helix-wrapper/defnc clojure.core/defn}}

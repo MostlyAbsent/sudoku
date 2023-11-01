@@ -1,0 +1,26 @@
+{
+  "name": "sudoku",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "tw": "pnpm tailwindcss -i global.css -o resources/public/assets/css/output.css",
+    "watch:css": "onchange 'resources/public/assets/js/*' -- pnpm tw",
+    "watch:shadow": "shadow-cljs server",
+    "dev": "pnpm run '/^watch:.*/'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-refresh": "^0.14.0",
+    "shadow-cljs": "^2.25.10",
+    "tailwindcss": "^3.3.5"
+  },
+  "devDependencies": {
+    "onchange": "^7.1.0"
+  }
+}

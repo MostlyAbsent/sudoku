@@ -1,2 +1,12 @@
-{:paths ["/src"]
- :deps {}}
+{:paths ["src/clj" "src/cljs" "src/cljc" "resources"]
+ :deps {org.clojure/math.numeric-tower {:mvn/version "0.0.5"}
+        lilactown/helix {:mvn/version "0.1.10"}
+        thheller/shadow-cljs {:mvn/version "2.25.4"}
+        metosin/reitit {:mvn/version "0.7.0-alpha5"}
+        metosin/muuntaja {:mvn/version "0.6.8"}
+        ring/ring {:mvn/version "1.10.0"}
+        markdown-clj/markdown-clj {:mvn/version "1.11.7"}
+        javax.servlet/javax.servlet-api {:mvn/version "4.0.1"}}
+ :aliases
+ {:cljs
+  {:extra-deps {}}}}
