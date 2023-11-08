@@ -2,22 +2,21 @@
   (:require-macros
    [lib.helix-wrapper :as lh])
   (:require
+   ["jotai" :as jotai]
    ["react-dom/client" :as rdom]
    [clojure.spec.alpha :as s]
    [helix.core :refer [$]]
-   [helix.hooks :as hooks]
    [helix.dom :as d]))
-
-(def grid
-  (atom
-   (into {}
-         (for [m (range 9)
-               n (range 9)]
-           {[m n] 0}))))
 
 (defn log
   [s]
   (.log js/console s))
+
+(def grid
+  (into {}
+        (for [m (range 9)
+              n (range 9)]
+          {(str m " " n) (jotai/atom  0)})))
 
 (def charset "0123456789")
 
@@ -41,15 +40,15 @@
     (f v)))
 
 (lh/defnc cell
-  [{:keys [index]}]
-  (let [[v set-v] (hooks/use-state 0)]
+  [{:keys [id]}]
+  (let [[v set-v] (jotai/useAtom (get grid id))]
     (d/div {:class-name "border border-black"}
-           (d/input {:default-value v
+           (d/input {:value v
+                     :disabled true
                      :type "text"
-                     :index index
+                     :id id
                      :class-name "w-8 h-8 text-center"
-                     :on-change (fn [e] (handle-on-change e index set-v))
-                     :on-click #() #_(.log js/console (second index))}))))
+                     :on-click #()}))))
 
 (lh/defnc sudoku
   []
@@ -59,12 +58,8 @@
    (d/div)
    (d/div
     {:class-name "grid grid-cols-9 w-[18rem] place-items-center justify-center"}
-    (->> (range 9)
-         (map (fn [m]
-                (->> (range 9)
-                     (map (fn [n]
-                            ($ cell {:key [m n]
-                                     :index [m n]}))))))))))
+    (map #($ cell {:id (first %)
+                   :key (first %)} %) grid))))
 
 (defonce root (rdom/createRoot (js/document.getElementById "app")))
 

@@ -12,4 +12,5 @@ A sudoku web app
   
 ### Jotai
 
-I think if i refactor to jotai and having button inputs for the value entry this will work better. This might even extend to on-keypress or something.
+Basic implementation
+
