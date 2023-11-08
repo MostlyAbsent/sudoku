@@ -3,6 +3,7 @@
    [lib.helix-wrapper :as lh])
   (:require
    ["react-dom/client" :as rdom]
+   [clojure.spec.alpha :as s]
    [helix.core :refer [$]]
    [helix.hooks :as hooks]
    [helix.dom :as d]))
@@ -14,6 +15,23 @@
                n (range 9)]
            {[m n] 0}))))
 
+(defn log
+  [s]
+  (.log js/console s))
+
+(def charset "0123456789")
+
+(s/def :sudoku/charset (fn [s] (not-any?
+                                 false?
+                                 (map #(contains? (set charset) %) s))))
+
+(s/def :sudoku/length #(= (count %) 1))
+
+(s/def :sudoku/empty #(= "" %))
+
+(s/def :sudoku/valid? #(s/or
+                        :sudoku/empty
+                        (s/and :sudoku/charset :sudoku/length)))
 (defn handle-on-change
   [e i f]
   (let [v (js/parseInt (.-value (.-target e)))
