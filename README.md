@@ -14,6 +14,3 @@ A sudoku web app
 
 Basic implementation
 
-### Control panel
-
-Add a control panel under the grid to allow for data input.
