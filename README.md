@@ -10,7 +10,3 @@ A sudoku web app
 - [ ] It should reset to the previous value if it fails validation.
   - This isn't resetting yet. I think it's a state mangement issue.
   
-### Jotai
-
-Basic implementation
-
