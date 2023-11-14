@@ -4,8 +4,7 @@
   (:require
    ["jotai" :as jotai]
    ["react-dom/client" :as rdom]
-   [clojure.spec.alpha :as s]
-   [helix.core :refer [$ <>]]
+   [helix.core :refer [$]]
    [helix.dom :as d]))
 
 (defn log
@@ -16,27 +15,6 @@
   (reduce (fn [acc _] (conj acc (jotai/atom 0))) [] (range 81)))
 
 (def selected
-
-(def charset "0123456789")
-
-(s/def :sudoku/charset (fn [s] (not-any?
-                                 false?
-                                 (map #(contains? (set charset) %) s))))
-
-(s/def :sudoku/length #(= (count %) 1))
-
-(s/def :sudoku/empty #(= "" %))
-
-(s/def :sudoku/valid? #(s/or
-                        :sudoku/empty
-                        (s/and :sudoku/charset :sudoku/length)))
-(defn handle-on-change
-  [e i f]
-  (let [v (js/parseInt (.-value (.-target e)))
-        m (first i)
-        n (second i)]
-    (swap! grid assoc [m n] v)
-    (f v)))
   (jotai/atom 0))
 
 (lh/defnc control [{:keys [id]}]
