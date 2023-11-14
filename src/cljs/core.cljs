@@ -13,13 +13,9 @@
   (.log js/console s))
 
 (def grid
-  (into {}
-        (for [m (range 9)
-              n (range 9)]
-          {(str m " " n) (jotai/atom  0)})))
+  (reduce (fn [acc _] (conj acc (jotai/atom 0))) [] (range 81)))
 
 (def selected
-  (jotai/atom "0 0"))
 
 (def charset "0123456789")
 
@@ -41,6 +37,7 @@
         n (second i)]
     (swap! grid assoc [m n] v)
     (f v)))
+  (jotai/atom 0))
 
 (lh/defnc control [{:keys [id]}]
   (let [[s _] (jotai/useAtom selected)
@@ -49,17 +46,18 @@
             :on-click #(set-v id)}
            (str id))))
 
+
 (lh/defnc controls [_]
   (let [[sel _] (jotai/useAtom selected)]
-      (d/div {:class-name "grid grid-rows-2 justify-center"}
-             (d/div
-              (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
-                      :on-click #(log sel)}
-                     "Check Solution")
-              (d/div {:class-name "h-4"})
-              (d/div {:class-name "grid grid-cols-3 place-items-center gap-4"}
-                     (map #($ control {:id %
-                                       :key %}) (range 1 10)))))))
+    (d/div {:class-name "grid grid-rows-2 justify-center"}
+           (d/div
+            (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
+                    :on-click #(log sel)}
+                   "Check Solution")
+            (d/div {:class-name "h-4"})
+            (d/div {:class-name "grid grid-cols-3 place-items-center gap-4"}
+                   (map #($ control {:id %
+                                     :key %}) (range 1 10)))))))
 
 (lh/defnc cell
   [{:keys [id]}]
@@ -80,8 +78,8 @@
    ($ controls)
    (d/div
     {:class-name "grid grid-cols-9 w-[18rem] place-items-center justify-center"}
-    (map #($ cell {:id (first %)
-                   :key (first %)} %) grid))))
+    (map #($ cell {:id (.indexOf grid %)
+                   :key (.indexOf grid %)}) grid))))
 
 (defonce root (rdom/createRoot (js/document.getElementById "app")))
 
