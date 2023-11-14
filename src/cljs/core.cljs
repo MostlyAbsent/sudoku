@@ -51,11 +51,15 @@
 
 (lh/defnc controls [_]
   (let [[sel _] (jotai/useAtom selected)]
-      (d/div {:class-name "grid grid-rows-2"}
-             (d/div {:on-click #(log sel)} "selected")
-             (d/div {:class-name "grid grid-cols-9 place-items-center"}
-                    (map #($ control {:id %
-                                      :key %}) (range 1 10))))))
+      (d/div {:class-name "grid grid-rows-2 justify-center"}
+             (d/div
+              (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
+                      :on-click #(log sel)}
+                     "Check Solution")
+              (d/div {:class-name "h-4"})
+              (d/div {:class-name "grid grid-cols-3 place-items-center gap-4"}
+                     (map #($ control {:id %
+                                       :key %}) (range 1 10)))))))
 
 (lh/defnc cell
   [{:keys [id]}]
@@ -72,7 +76,7 @@
   []
   (set! (. js/document -title) "Sudoku!")
   (d/div
-   {:class-name "grid grid-cols-3"}
+   {:class-name "grid grid-cols-3 my-4"}
    ($ controls)
    (d/div
     {:class-name "grid grid-cols-9 w-[18rem] place-items-center justify-center"}
