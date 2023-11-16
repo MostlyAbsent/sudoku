@@ -6,5 +6,5 @@ A sudoku web app
 
 ### Check solution
 
-- [ ] Button
-- [ ] Associated logic
+- [x] Button
+- [x] Associated logic
