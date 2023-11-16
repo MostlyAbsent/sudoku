@@ -8,8 +8,9 @@
 
 (ns sudoku
   (:require
-   [clojure.string :as str]
-   [clojure.set :as sets]))
+   [clojure.pprint :as pprint]
+   [clojure.set :as sets]
+   [clojure.string :as str]))
 
 ;;;example input for testing
 (def grid01
@@ -23,6 +24,17 @@
         "800203009"
         "005010300"))
 
+(def correct-grid
+  (list 435269781
+        682571493
+        195834562
+        826195347
+        374682915
+        951743628
+        519326874
+        248957136
+        763418259))
+
 ;;;labels and definitions for the columns and rows
 (def rowlabel [:A :B :C :D :E :F :G :H :I])
 (def collabel [:a :b :c :d :e :f :g :h :i])
@@ -32,6 +44,7 @@
   (for [r rowlabel
         c collabel]
     [r c]))
+
 
 (def colkeys
   (for [c collabel
@@ -91,3 +104,6 @@
             ;;make sure each square is valid compared to peers
             (every? true? (valid-sq? [r c] grid)))))
 
+(valid-puzzle? (make-grid base-64/testgrid))
+
+(prn base-64/testgrid)
