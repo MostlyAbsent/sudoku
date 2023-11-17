@@ -13,7 +13,7 @@ A sudoku web app
 
 ### New game feature 
 
-- [ ] add button 
+- [x] add button 
 - [ ] create logic to generate fixed positions
 - [ ] create update logic 
 

@@ -45,17 +45,13 @@
             :on-click (fn [_] (set-g (calculate-grid-update g s id)))}
            (str id))))
 
-(lh/defnc controls [_]
-  (let [[g _] (jotai/useAtom grid)]
-    (d/div {:class-name "grid grid-rows-2 justify-center"}
-           (d/div
-            (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
-                    :on-click #(log (sudoku/valid-puzzle? (sudoku/make-grid g)))}
-                   "Check Solution")
-            (d/div {:class-name "h-4"})
-            (d/div {:class-name "grid grid-cols-3 place-items-center gap-4"}
-                   (map #($ control {:id %
-                                     :key %}) (range 1 10)))))))
+(lh/defnc numpad [_]
+  (d/div {:class-name "grid grid-rows-2 justify-center"}
+         (d/div
+          (d/div {:class-name "h-4"})
+          (d/div {:class-name "grid grid-cols-3 place-items-center gap-4"}
+                 (map #($ control {:id %
+                                   :key %}) (range 1 10))) )))
 
 (lh/defnc cell
   [{:keys [cell-atom]}]
@@ -70,16 +66,30 @@
             :id idx}
            v)))
 
+(lh/defnc controls
+  []
+  (let [[g _] (jotai/useAtom grid)]
+    (d/div {:class-name "grid grid-cols-2 max-w-[18rem]"}
+     (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
+             :on-click #(log "titties")}
+            "New Game")
+     (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
+             :on-click #(log (sudoku/valid-puzzle? (sudoku/make-grid g)))}
+            "Check Solution"))))
+
 (lh/defnc sudoku
   []
   (set! (. js/document -title) "Sudoku!")
   (let [[g _] (jotai/useAtom split-grid)]
     (d/div
-     {:class-name "grid grid-cols-3 my-4"}
      ($ controls)
      (d/div
-      {:class-name "grid grid-cols-9 w-[18rem] place-items-center justify-center"}
-      (map #($ cell {:cell-atom %}) g)))))
+      {:class-name "grid grid-cols-3 my-4"}
+      ($ numpad)
+      (d/div
+       {:class-name "grid grid-cols-9 w-[18rem]"}
+       (map #($ cell {:cell-atom %}) g))
+      ))))
 
 (defonce root (rdom/createRoot (js/document.getElementById "app")))
 
