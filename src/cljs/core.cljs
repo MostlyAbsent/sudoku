@@ -27,6 +27,38 @@
 (def selected
   (jotai/atom "0"))
 
+(defn new-game-grid
+  []
+  (let [empty-grid (reduce (fn [acc [idx x]]
+                             (assoc acc idx x))
+                           {}
+                           (map-indexed
+                            (fn [idx itm] [idx itm])
+                            (reduce (fn [acc _] (conj acc 0)) [] (range 81))))]
+    (->>
+     (reduce
+      (fn [acc _]
+        (loop [p (rand-int 80)
+               v (inc (rand-int 9))]
+          (if (not-any? true? (map #(= p (get acc %)) acc))
+            (conj acc {p v})
+            (recur (rand-int 80) (inc (rand-int 9))))))
+      {}
+      (range 20))
+     (merge empty-grid)
+     vec
+     (sort #(compare (first %1) (first %2)))
+     (map (fn [[p v]]
+            {p v}))
+     clj->js)))
+
+(defn new-game
+  []
+  (loop [g (new-game-grid)]
+    (if (sudoku/valid-game? (sudoku/make-grid g))
+      g
+      (recur (new-game-grid)))))
+
 (defn calculate-grid-update
   [g idx v]
   (clj->js
@@ -38,7 +70,7 @@
                     {idx v}
                     c-clj))) g))))
 
-(lh/defnc control [{:keys [id]}]
+(lh/defnc num-button [{:keys [id]}]
   (let [[s _] (jotai/useAtom selected)
         [g set-g] (jotai/useAtom grid)]
     (d/div {:class-name "border border-black w-6 h-6 flex justify-center items-center"
@@ -50,7 +82,7 @@
          (d/div
           (d/div {:class-name "h-4"})
           (d/div {:class-name "grid grid-cols-3 place-items-center gap-4"}
-                 (map #($ control {:id %
+                 (map #($ num-button {:id %
                                    :key %}) (range 1 10))) )))
 
 (lh/defnc cell
@@ -68,10 +100,10 @@
 
 (lh/defnc controls
   []
-  (let [[g _] (jotai/useAtom grid)]
+  (let [[g set-g] (jotai/useAtom grid)]
     (d/div {:class-name "grid grid-cols-2 max-w-[18rem]"}
      (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
-             :on-click #(log "titties")}
+             :on-click #(set-g (new-game))}
             "New Game")
      (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
              :on-click #(log (sudoku/valid-puzzle? (sudoku/make-grid g)))}

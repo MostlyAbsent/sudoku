@@ -14,7 +14,7 @@ A sudoku web app
 ### New game feature 
 
 - [x] add button 
-- [ ] create logic to generate fixed positions
+- [x] create logic to generate fixed positions
 - [ ] create update logic 
 
 ### Cell locking feature 
