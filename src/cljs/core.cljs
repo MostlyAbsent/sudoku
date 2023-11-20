@@ -98,6 +98,8 @@
                     not)]
    (d/div {:class-name (str "border border-black w-8 h-8 flex justify-center items-center"
                              (cond
+                               (and (= sel idx)
+                                    locked?) " bg-zinc-300"
                                (= sel idx) " bg-emerald-400"
                                locked? " bg-zinc-400"))
            :on-click #(set-sel idx)
