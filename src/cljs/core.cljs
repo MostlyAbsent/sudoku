@@ -7,11 +7,17 @@
    ["react-dom/client" :as rdom]
    [helix.core :refer [$]]
    [helix.dom :as d]
-   [sudoku]))
+   [sudoku]
+   [cljs.pprint :as pp]))
 
 (defn log
   [s]
   (.log js/console s))
+
+(defn log-and-pass
+  [s]
+  (.log js/console s)
+  s)
 
 (def grid
   (jotai/atom
@@ -39,15 +45,14 @@
   (jotai/atom "0"))
 
 (defn randomize-locked-cells []
-  (reduce
-   (fn [acc _]
-     (loop [p (rand-int 80)
-            v (inc (rand-int 9))]
-       (if (not-any? true? (map #(= p (get acc %)) acc))
-         (conj acc {p v})
-         (recur (rand-int 80) (inc (rand-int 9))))))
-   {}
-   (range 20)))
+  (loop [p (rand-int 80)
+         v (inc (rand-int 9))
+         acc {}]
+    (if (= (count acc) 20)
+      acc
+      (if (not-any? true? (map #(= p (get acc %)) acc))
+        (recur (rand-int 80) (inc (rand-int 9)) (conj acc {p v}))
+        (recur (rand-int 80) (inc (rand-int 9)) acc)))))
 
 (defn new-game-grid
   [lc]
