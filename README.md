@@ -11,16 +11,3 @@ A sudoku web app
 - [ ] create correct modal view 
 - [ ] create incorrect modal view 
 
-### New game feature 
-
-- [x] add button 
-- [x] create logic to generate fixed positions
-- [x] create update logic 
-  - [x] update locked cells
-
-### Cell locking feature 
-
-- [x] something to lock the cells given from the new game 
-- [x] created a store for the locked cells
-- [x] add a grey background to the locked cells
-- [x] prevent the controls from updating the locked cells
