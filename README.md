@@ -20,7 +20,7 @@ A sudoku web app
 
 ### Cell locking feature 
 
-- [ ] something to lock the cells given from the new game 
+- [x] something to lock the cells given from the new game 
 - [x] created a store for the locked cells
 - [x] add a grey background to the locked cells
-- [ ] prevent the controls from updating the locked cells
+- [x] prevent the controls from updating the locked cells

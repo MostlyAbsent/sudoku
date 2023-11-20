@@ -69,11 +69,21 @@
                     {idx v}
                     c-clj))) g))))
 
+(defn locked?
+  [lc idx]
+  (-> lc
+      js->clj
+      (get idx)
+      nil?
+      not))
+
 (lh/defnc num-button [{:keys [id]}]
   (let [[s _] (jotai/useAtom selected)
+        [lc _] (jotai/useAtom locked-cells)
         [g set-g] (jotai/useAtom grid)]
     (d/div {:class-name "border border-black w-6 h-6 flex justify-center items-center"
-            :on-click (fn [_] (set-g (calculate-grid-update g s id)))}
+            :on-click (fn [_] (if (not (locked? lc s))
+                               (set-g (calculate-grid-update g s id))))}
            (str id))))
 
 (lh/defnc numpad [_]
@@ -90,18 +100,13 @@
         [lc _] (jotai/useAtom locked-cells)
         [cellv _] (jotai/useAtom cell-atom)
         idx (-> cellv js->clj first first)
-        v (-> cellv js->clj first second)
-        locked? (-> lc
-                    js->clj
-                    (get idx)
-                    nil?
-                    not)]
+        v (-> cellv js->clj first second)]
    (d/div {:class-name (str "border border-black w-8 h-8 flex justify-center items-center"
                              (cond
                                (and (= sel idx)
-                                    locked?) " bg-zinc-300"
+                                    (locked? lc idx)) " bg-zinc-300"
                                (= sel idx) " bg-emerald-400"
-                               locked? " bg-zinc-400"))
+                               (locked? lc idx) " bg-zinc-400"))
            :on-click #(set-sel idx)
             :id idx}
            v)))
