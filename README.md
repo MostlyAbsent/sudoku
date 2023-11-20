@@ -22,5 +22,5 @@ A sudoku web app
 
 - [ ] something to lock the cells given from the new game 
 - [x] created a store for the locked cells
-- [ ] add a grey background to the locked cells
+- [x] add a grey background to the locked cells
 - [ ] prevent the controls from updating the locked cells

@@ -87,13 +87,20 @@
 (lh/defnc cell
   [{:keys [cell-atom]}]
   (let [[sel set-sel] (jotai/useAtom selected)
+        [lc _] (jotai/useAtom locked-cells)
         [cellv _] (jotai/useAtom cell-atom)
         idx (-> cellv js->clj first first)
-        v (-> cellv js->clj first second)]
+        v (-> cellv js->clj first second)
+        locked? (-> lc
+                    js->clj
+                    (get idx)
+                    nil?
+                    not)]
    (d/div {:class-name (str "border border-black w-8 h-8 flex justify-center items-center"
-                             (if (= sel idx)
-                               " bg-emerald-400"))
-            :on-click #(set-sel idx)
+                             (cond
+                               (= sel idx) " bg-emerald-400"
+                               locked? " bg-zinc-400"))
+           :on-click #(set-sel idx)
             :id idx}
            v)))
 
