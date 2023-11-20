@@ -21,43 +21,42 @@
            (fn [idx itm] {idx itm})
            (reduce (fn [acc _] (conj acc 0)) [] (range 81)))))))
 
+(def locked-cells
+  (jotai/atom
+   (clj->js {})))
+
+(def empty-grid
+ (reduce (fn [acc [idx x]]
+                             (assoc acc idx x))
+                           {}
+                           (map-indexed
+                            (fn [idx itm] [idx itm])
+                            (reduce (fn [acc _] (conj acc 0)) [] (range 81)))))
 (def split-grid
   (jutils/splitAtom grid))
 
 (def selected
   (jotai/atom "0"))
 
-(defn new-game-grid
-  []
-  (let [empty-grid (reduce (fn [acc [idx x]]
-                             (assoc acc idx x))
-                           {}
-                           (map-indexed
-                            (fn [idx itm] [idx itm])
-                            (reduce (fn [acc _] (conj acc 0)) [] (range 81))))]
-    (->>
-     (reduce
-      (fn [acc _]
-        (loop [p (rand-int 80)
-               v (inc (rand-int 9))]
-          (if (not-any? true? (map #(= p (get acc %)) acc))
-            (conj acc {p v})
-            (recur (rand-int 80) (inc (rand-int 9))))))
-      {}
-      (range 20))
-     (merge empty-grid)
-     vec
-     (sort #(compare (first %1) (first %2)))
-     (map (fn [[p v]]
-            {p v}))
-     clj->js)))
+(defn randomize-locked-cells []
+  (reduce
+   (fn [acc _]
+     (loop [p (rand-int 80)
+            v (inc (rand-int 9))]
+       (if (not-any? true? (map #(= p (get acc %)) acc))
+         (conj acc {p v})
+         (recur (rand-int 80) (inc (rand-int 9))))))
+   {}
+   (range 20)))
 
-(defn new-game
-  []
-  (loop [g (new-game-grid)]
-    (if (sudoku/valid-game? (sudoku/make-grid g))
-      g
-      (recur (new-game-grid)))))
+(defn new-game-grid
+  [lc]
+  (->> lc
+       (merge empty-grid)
+       vec
+       (sort #(compare (first %1) (first %2)))
+       (map (fn [[p v]]
+              {p v}))))
 
 (defn calculate-grid-update
   [g idx v]
@@ -100,10 +99,19 @@
 
 (lh/defnc controls
   []
-  (let [[g set-g] (jotai/useAtom grid)]
+  (let [[g set-g] (jotai/useAtom grid)
+        [lc set-lc] (jotai/useAtom locked-cells)]
     (d/div {:class-name "grid grid-cols-2 max-w-[18rem]"}
-     (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
-             :on-click #(set-g (new-game))}
+           (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
+                   :on-click (fn []
+                               (loop [lc (randomize-locked-cells)
+                                      g (new-game-grid lc)]
+                                 (if (sudoku/valid-game? (sudoku/make-grid g))
+                                   (doall
+                                    (set-g (clj->js g))
+                                    (set-lc (clj->js lc)))
+                                   (let [nlc (randomize-locked-cells)]
+                                     (recur nlc (new-game-grid nlc))))))}
             "New Game")
      (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
              :on-click #(log (sudoku/valid-puzzle? (sudoku/make-grid g)))}
@@ -120,7 +128,8 @@
       ($ numpad)
       (d/div
        {:class-name "grid grid-cols-9 w-[18rem]"}
-       (map #($ cell {:cell-atom %}) g))
+       (map #($ cell {:cell-atom %
+                      :key %}) g))
       ))))
 
 (defonce root (rdom/createRoot (js/document.getElementById "app")))
