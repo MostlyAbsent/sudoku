@@ -3,9 +3,9 @@
    [lib.helix-wrapper :as lh])
   (:require
    ["jotai" :as jotai]
-   ["/ui/dialog" :as dialog]
    ["jotai/utils" :as jutils]
    ["react-dom/client" :as rdom]
+   ["/ui/hover-card" :as hc]
    [helix.core :refer [$]]
    [helix.dom :as d]
    [sudoku]
@@ -132,10 +132,15 @@
                                     (set-lc (clj->js lc)))
                                    (let [nlc (randomize-locked-cells)]
                                      (recur nlc (new-game-grid nlc))))))}
-            "New Game")
-     (d/div {:class-name "border border-black w-[9rem] h-6 flex justify-center items-center"
-             :on-click #(log (sudoku/valid-puzzle? (sudoku/make-grid g)))}
-            "Check Solution"))))
+                  "New Game")
+           ($ hc/HoverCard
+              ($ hc/HoverCardTrigger
+                 {:class "border border-black w-[9rem] h-6 flex justify-center items-center"}
+                 "Check Solution")
+              (if (sudoku/valid-puzzle? (sudoku/make-grid g))
+                ($ hc/HoverCardContent "Correct!")
+                ($ hc/HoverCardContent "Not Correct!")))
+           )))
 
 (lh/defnc sudoku
   []
@@ -149,8 +154,7 @@
       (d/div
        {:class-name "grid grid-cols-9 w-[18rem]"}
        (map #($ cell {:cell-atom %
-                      :key %}) g))
-      ))))
+                      :key %}) g))))))
 
 (defonce root (rdom/createRoot (js/document.getElementById "app")))
 
