@@ -1,4 +1,4 @@
-{:paths ["src/clj" "src/cljs" "src/cljc" "resources" "components"]
+{:paths ["src/clj" "src/cljs" "src/cljc" "resources" "src/gen"]
  :deps {org.clojure/math.numeric-tower {:mvn/version "0.0.5"}
         lilactown/helix {:mvn/version "0.1.10"}
         thheller/shadow-cljs {:mvn/version "2.25.4"}

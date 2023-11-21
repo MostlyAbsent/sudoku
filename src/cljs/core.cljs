@@ -3,6 +3,7 @@
    [lib.helix-wrapper :as lh])
   (:require
    ["jotai" :as jotai]
+   ["/ui/dialog" :as dialog]
    ["jotai/utils" :as jutils]
    ["react-dom/client" :as rdom]
    [helix.core :refer [$]]
