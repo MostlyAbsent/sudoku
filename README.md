@@ -4,8 +4,12 @@ A sudoku web app
 
 ## TODO
 
-### Solution Modal
+### Dockerise
 
-- [x] bring in shadcn-ui 
-- [x] update check solution button 
+- [ ] shadow build script
+  - [ ] include the modified shadcn-ui components
+  - [ ] include the babel step
 
+### Docker routing
+
+- [ ] 
