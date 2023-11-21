@@ -14,14 +14,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
     "jotai": "^2.5.1",
     "jotai-optics": "^0.3.1",
+    "lucide-react": "^0.292.0",
     "optics-ts": "^2.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-refresh": "^0.14.0",
+    "shadcn-ui": "^0.4.1",
     "shadow-cljs": "^2.25.10",
-    "tailwindcss": "^3.3.5"
+    "tailwind-merge": "^2.0.0",
+    "tailwindcss": "^3.3.5",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "onchange": "^7.1.0"
