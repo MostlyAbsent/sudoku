@@ -6,8 +6,6 @@ A sudoku web app
 
 ### Solution Modal
 
-- [ ] bring in shadcn-ui 
-- [ ] update check solution button 
-- [ ] create correct modal view 
-- [ ] create incorrect modal view 
+- [x] bring in shadcn-ui 
+- [x] update check solution button 
 
