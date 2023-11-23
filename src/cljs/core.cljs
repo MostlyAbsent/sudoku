@@ -2,23 +2,13 @@
   (:require-macros
    [lib.helix-wrapper :as lh])
   (:require
+   ["/ui/hover-card" :as hc]
    ["jotai" :as jotai]
    ["jotai/utils" :as jutils]
    ["react-dom/client" :as rdom]
-   ["/ui/hover-card" :as hc]
    [helix.core :refer [$]]
    [helix.dom :as d]
-   [sudoku]
-   [cljs.pprint :as pp]))
-
-(defn log
-  [s]
-  (.log js/console s))
-
-(defn log-and-pass
-  [s]
-  (.log js/console s)
-  s)
+   [sudoku]))
 
 (def grid
   (jotai/atom
