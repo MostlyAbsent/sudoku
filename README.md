@@ -12,6 +12,7 @@ A sudoku web app
 
 - [x] shadow build script
 - [x] clojure build script
+- [ ] docker build scripts
 
 ### Docker routing
 
