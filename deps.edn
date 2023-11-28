@@ -8,5 +8,8 @@
         markdown-clj/markdown-clj {:mvn/version "1.11.7"}
         javax.servlet/javax.servlet-api {:mvn/version "4.0.1"}}
  :aliases
- {:cljs
+ {:build
+  {:deps {io.github.clojure/tools.build {:git/tag "v0.9.5" :git/sha "24f2894"}}
+   :ns-default build}
+  :cljs
   {:extra-deps {}}}}

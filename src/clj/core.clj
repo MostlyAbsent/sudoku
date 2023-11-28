@@ -4,7 +4,8 @@
    [muuntaja.core :as m]
    [reitit.ring :as ring]
    [reitit.ring.middleware.muuntaja :as muuntaja]
-   [ring.adapter.jetty :as ring-jetty]))
+   [ring.adapter.jetty :as ring-jetty])
+  (:gen-class))
 
 (defn index
   []
@@ -27,6 +28,5 @@
   (ring-jetty/run-jetty #'app {:port 3000
                                :join? false}))
 
-(defn -main
-  []
+(defn -main []
   (start))

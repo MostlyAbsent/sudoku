@@ -6,13 +6,12 @@ A sudoku web app
 
 ### clj web server
 
-- [ ] simple server to replace the shadow-cljs dev-server
+- [x] simple server to replace the shadow-cljs dev-server
 
 ### Dockerise
 
-- [ ] shadow build script
-  - [ ] include the modified shadcn-ui components
-  - [ ] include the babel step
+- [x] shadow build script
+- [x] clojure build script
 
 ### Docker routing
 
