@@ -16,4 +16,4 @@ A sudoku web app
 
 ### Docker routing
 
-- [ ] 
+- [x] Nginx reverse proxy.
